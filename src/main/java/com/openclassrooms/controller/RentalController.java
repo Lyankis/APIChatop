@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.model.Rental;
@@ -44,26 +45,51 @@ public class RentalController {
 	}
 	
 	//Création d'une rental
-	
-	
-	//Update d'une rental
-	@PutMapping("/rentals")
-	public ResponseEntity<Rental> updateRental(@PathVariable("id") Long id, @RequestBody Rental rental){
-		Optional<Rental> rentalData = rentalService.findById(id);
-		
-		if(rentalData.isPresent()) {
-			Rental _rental = rentalData.get();
-			_rental.setName(rental.getName());
-			_rental.setSurface(rental.getSurface());
-			_rental.setPrice(rental.getPrice());
-			_rental.setPicture(rental.getPicture());
-			_rental.setDescription(rental.getDescription());
-			
-			return new ResponseEntity<>(rentalService.UpdateRental(_rental), HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@PostMapping("/rentals")
+	public ResponseEntity<Rental> createRental(@RequestBody Rental rental){
+		try {
+			Rental _rental = rentalService.createRental(rental);
+			return new ResponseEntity<>(_rental, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+//	Update d'une rental
+//	@PutMapping("/rentals/{id}")
+//	public ResponseEntity<Rental> updateRental(@PathVariable("id") Long id, @RequestBody Rental rental){
+//		Optional<Rental> rentalData = rentalService.findById(id);
+//		
+//		if(rentalData.isPresent()) {
+//			Rental _rental = rentalData.get();
+//			_rental.setName(rental.getName());
+//			_rental.setSurface(rental.getSurface());
+//			_rental.setPrice(rental.getPrice());
+//			_rental.setPicture(rental.getPicture());
+//			_rental.setDescription(rental.getDescription());
+//			
+//			return new ResponseEntity<>(rentalService.UpdateRental(_rental), HttpStatus.OK);
+//		}
+//		else {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//	}
+	
+	
+	@PutMapping("/rentals/{id}")
+    public ResponseEntity<Rental> updateRental(@PathVariable long id,@RequestBody Rental rental) throws Exception {
+		Rental updateRental = rentalService.findById(id)
+                .orElseThrow(() -> new Exception("Aucune rental trouvé avec cette id: " + id));
+
+        updateRental.setName(rental.getName());
+        updateRental.setSurface(rental.getSurface());
+        updateRental.setPrice(rental.getPrice());
+        updateRental.setPicture(rental.getPicture());
+        updateRental.setDescription(rental.getDescription());
+
+        rentalService.UpdateRental(updateRental);
+
+        return ResponseEntity.ok(updateRental);
+    }
 
 }

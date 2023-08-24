@@ -9,6 +9,3 @@ import com.openclassrooms.model.Rental;
 public interface RentalRepository extends CrudRepository<Rental, Long>{
 
 }
-
-//@Repository
-//public interface RentalRepository2 extends CrudRepository<id, Integer>

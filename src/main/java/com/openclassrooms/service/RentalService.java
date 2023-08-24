@@ -22,17 +22,19 @@ public class RentalService {
 	}
 	
 	//Recup d'une rental par id
-	public Optional<Rental>findById(Long id) {
+	public Optional<Rental> findById(Long id) {
 		return rentalRepository.findById(id);
 	}
-	
 	//Création d'une rental
-//	public Rental CreateRental(Rental rental) {
-//		return rentalRepository.
-//	}
+	public Rental createRental(Rental rental) {
+		rentalRepository.save(rental);
+		
+		return rental;
+	}
 	
 	//Update d'une rental
 	public Rental UpdateRental(Rental rental){
 		return rentalRepository.save(rental);
 	}
+	
 }
