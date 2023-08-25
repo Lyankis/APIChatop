@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.model.Rental;
+import com.openclassrooms.model.RentalDTO;
 import com.openclassrooms.repository.RentalRepository;
 import com.openclassrooms.service.RentalService;
 
@@ -77,19 +78,11 @@ public class RentalController {
 	
 	
 	@PutMapping("/rentals/{id}")
-    public ResponseEntity<Rental> updateRental(@PathVariable long id,@RequestBody Rental rental) throws Exception {
-		Rental updateRental = rentalService.findById(id)
-                .orElseThrow(() -> new Exception("Aucune rental trouvé avec cette id: " + id));
+    public ResponseEntity<Rental> updateRental(@PathVariable Long id,@RequestBody RentalDTO rental) throws Exception {
+		rental.setId(id);
+//        rentalService.UpdateRental(rental);
 
-        updateRental.setName(rental.getName());
-        updateRental.setSurface(rental.getSurface());
-        updateRental.setPrice(rental.getPrice());
-        updateRental.setPicture(rental.getPicture());
-        updateRental.setDescription(rental.getDescription());
-
-        rentalService.UpdateRental(updateRental);
-
-        return ResponseEntity.ok(updateRental);
+        return ResponseEntity.ok(null);
     }
 
 }
