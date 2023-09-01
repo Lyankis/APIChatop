@@ -1,8 +1,6 @@
 package com.openclassrooms.service;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +23,7 @@ public class RentalService {
 		return (List<Rental>) rentalRepository.findAll();
 	}
 	
-	//Recup d'une rental par id
+	//Verif par id de l'existance d'une rental
 	public Optional<Rental> findById(Long id) {
 		return rentalRepository.findById(id);
 	}

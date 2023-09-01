@@ -10,16 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.model.Rental;
-import com.openclassrooms.model.RentalDTO;
-import com.openclassrooms.repository.RentalRepository;
 import com.openclassrooms.service.RentalService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("api/")
@@ -78,11 +74,12 @@ public class RentalController {
 	
 	
 	@PutMapping("/rentals/{id}")
-    public ResponseEntity<Rental> updateRental(@PathVariable Long id,@RequestBody RentalDTO rental) throws Exception {
+    public ResponseEntity<Rental> updateRental(@PathVariable Long id,@RequestBody Rental rental) throws Exception {
 		rental.setId(id);
-//        rentalService.UpdateRental(rental);
+		
+        rentalService.UpdateRental(rental);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(rental);
     }
 
 }
