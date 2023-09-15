@@ -2,9 +2,13 @@ package com.openclassrooms.model;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,8 +44,8 @@ public class User implements UserDetails{
 	@Column
 	private Date updated_at;
 	
-	@Enumerated(EnumType.STRING)
-    private Role role;
+//	@Enumerated(EnumType.STRING)
+//    private Role role;
 
 	public Long getId() {
 		return id;
@@ -67,10 +71,6 @@ public class User implements UserDetails{
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -93,18 +93,18 @@ public class User implements UserDetails{
 	
 	
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
+//	public Role getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(Role role) {
+//		this.role = role;
+//	}
 
 	@Override
+	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+        return List.of(new SimpleGrantedAuthority(Role.USER.name()));
 	}
 
 	@Override
@@ -130,6 +130,11 @@ public class User implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
 	}
 
 	

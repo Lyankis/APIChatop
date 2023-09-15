@@ -1,8 +1,11 @@
 package com.openclassrooms.service;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +13,7 @@ import com.openclassrooms.model.Role;
 import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
 import request.SignUpRequest;
-import request.SigninRequest;
 import response.JwtAuthenticationResponse;
 
 @Service
@@ -21,20 +22,37 @@ public class AuthService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	@Autowired
     private JwtService jwtService;
 	
-    private AuthenticationManager authenticationManager;
+//    private AuthenticationManager authenticationManager;
 	
 	public User register(User user) {
 		
-		userRepository.save(user);
+		Long time = Date.from(Instant.now()).getTime();
 		
-		return user;
+		User newUser = new User();
+		newUser.setEmail(user.getEmail());
+		newUser.setName(user.getName());
+		
+		newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+//		newUser.setRole(Role.USER);
+		newUser.setCreated_at(new Date(time));
+		newUser.setUpdated_at(new Date(time));
+		
+		return userRepository.save(newUser);
+		
+		
+//		user.setPassword(passwordEncoder.encode(user.getPassword()));
+//		
+//		userRepository.save(user);
+//		
+//		return user;
 	}
 	
-	public User findUserByEmail(String email) {
+	public Optional<User> findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
   
@@ -45,7 +63,7 @@ public class AuthService {
 	    	User user = new User();
 	    	user.setEmail(request.getEmail());
 	    	user.setPassword(passwordEncoder.encode(request.getPassword()));
-	    	user.setRole(Role.USER);
+//	    	user.setRole(Role.USER);
 	    	String jwt = jwtService.generateToken(user);
 	    	return new JwtAuthenticationResponse(jwt);
 	    }
