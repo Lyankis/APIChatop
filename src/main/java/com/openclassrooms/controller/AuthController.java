@@ -9,15 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.model.User;
 import com.openclassrooms.service.AuthService;
+import com.openclassrooms.service.JwtService;
 
 import request.SignUpRequest;
 import response.JwtAuthenticationResponse;
 
 @RestController
-public class AuthController {
+public class AuthController {    
 
 	@Autowired
 	private AuthService authService;
+	
 
 	@PostMapping("/auth/register")
 	public ResponseEntity<User> register(@RequestBody User user) {
@@ -33,5 +35,4 @@ public class AuthController {
     public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody SignUpRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
-
 }

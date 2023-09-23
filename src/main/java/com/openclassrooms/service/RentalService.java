@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.model.Rental;
@@ -19,7 +21,13 @@ public class RentalService {
 	private RentalRepository rentalRepository;
 	
 	//Recup de la liste des rentals
-	public List<Rental> getRentals(){
+	public List<Rental> getRentals() throws Exception{
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (authentication == null) {
+	        throw new Exception("Utilisateur non authentifié");
+	    }
 		return (List<Rental>) rentalRepository.findAll();
 	}
 	

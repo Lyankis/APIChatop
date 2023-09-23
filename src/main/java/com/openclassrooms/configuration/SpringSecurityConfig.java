@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.openclassrooms.repository.UserRepository;
+import com.openclassrooms.service.JwtService;
 import com.openclassrooms.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,17 +25,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SpringSecurityConfig{
 	
+	
 	@Autowired
-	UserService userService;
-	private final UserRepository userRepository = null;
+	private JwtService jwtService;
+	
+	@Autowired
+	private UserService userService;
+	
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
 		http
-		.addFilter(new JwtAuthentificationFilter())
+		.addFilterAfter(new JwtAuthentificationFilter(jwtService, userService), BasicAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-					.requestMatchers("/register").permitAll()
+					.requestMatchers("/auth/register").permitAll()
 					.requestMatchers("/auth/signup").permitAll()
 					
 					.requestMatchers(							
@@ -51,8 +57,7 @@ public class SpringSecurityConfig{
 			                )
 			        .permitAll()
 					
-					.anyRequest().authenticated()
-					
+					.anyRequest().authenticated()				
 					
 			)
 //			SI PAS CA 403 lors du register
@@ -67,10 +72,10 @@ public class SpringSecurityConfig{
 		return http.build();
 	}
 	
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+//	@Bean
+//	public UserDetailsService userDetailsService() {
+//		return username -> userService.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

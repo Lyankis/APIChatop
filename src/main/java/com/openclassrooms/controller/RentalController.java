@@ -26,7 +26,7 @@ public class RentalController {
 	
 	//Recup de la liste des rentals
 	@GetMapping("rentals")
-	public List<Rental> getRentals(){
+	public List<Rental> getRentals() throws Exception{
 		return rentalService.getRentals();
 	}
 	
