@@ -6,14 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.service.JwtService;
 import com.openclassrooms.service.UserService;
 
@@ -39,8 +36,9 @@ public class SpringSecurityConfig{
 		http
 		.addFilterAfter(new JwtAuthentificationFilter(jwtService, userService), BasicAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-					.requestMatchers("/auth/register").permitAll()
-					.requestMatchers("/auth/signup").permitAll()
+					.requestMatchers("images/**").permitAll()
+					.requestMatchers("api/auth/register").permitAll()
+					.requestMatchers("api/auth/login").permitAll()
 					
 					.requestMatchers(							
 							// -- Swagger UI v2
@@ -71,11 +69,6 @@ public class SpringSecurityConfig{
 		
 		return http.build();
 	}
-	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		return username -> userService.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

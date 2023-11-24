@@ -1,6 +1,9 @@
 package com.openclassrooms.model;
 
 
+import java.sql.Date;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,71 +17,79 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-//	
+	
+	@Column
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Long rental_id;
-//	
+	private Long rental_id;
+	
+	@Column
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Long user_id;
-//	
-//	@Column
-//	private String message;
-//	
-//	@Column
-//	private Date created_at;
-//	
-//	@Column
-//	private Date updated_at;
-//
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
-//
-//	public Long getRental_id() {
-//		return rental_id;
-//	}
-//
-//	public void setRental_id(Long rental_id) {
-//		this.rental_id = rental_id;
-//	}
-//
-//	public Long getUser_id() {
-//		return user_id;
-//	}
-//
-//	public void setUser_id(Long user_id) {
-//		this.user_id = user_id;
-//	}
-//
-//	public String getMessage() {
-//		return message;
-//	}
-//
-//	public void setMessage(String message) {
-//		this.message = message;
-//	}
-//
-//	public Date getCreated_at() {
-//		return created_at;
-//	}
-//
-//	public void setCreated_at(Date created_at) {
-//		this.created_at = created_at;
-//	}
-//
-//	public Date getUpdated_at() {
-//		return updated_at;
-//	}
-//
-//	public void setUpdated_at(Date updated_at) {
-//		this.updated_at = updated_at;
-//	}
+	private Long user_id;
+	
+	@Column
+	private String message;
+	
+	@Column
+	private Date created_at;
+	
+	@Column
+	private Date updated_at;
+
+	public Message() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getRental_id() {
+		return rental_id;
+	}
+
+	public void setRental_id(Long rental_id) {
+		this.rental_id = rental_id;
+	}
+
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
+	public Date getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(Date updated_at) {
+		this.updated_at = updated_at;
+	}
+
+	
 	
 	
 	

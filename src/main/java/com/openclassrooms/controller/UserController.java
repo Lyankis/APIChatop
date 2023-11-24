@@ -26,9 +26,7 @@ public class UserController {
 		Optional<User> user = userService.findById(id);
 		
 		if(user.isEmpty()) {
-//			return (ResponseEntity<User>) ResponseEntity.badRequest();
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Utilisateur inconnu !");
-//			return ResponseEntity.badRequest().body("Utilisateur inconu");
 		}
 		return ResponseEntity.ok(user.get());
 	}

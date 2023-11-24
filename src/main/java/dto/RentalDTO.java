@@ -1,46 +1,31 @@
-package com.openclassrooms.model;
+package dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name="rentals")
-public class Rental {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RentalDTO {
+	
 	private Long id;
-	
-	@Column
+
 	private String name;
-	
-	@Column
+
 	private Long surface;
-	
-	@Column
+
 	private Long price;
 	
-	@Column
-	private String picture;
+	private MultipartFile picture;
 	
-	@Column
 	private String description;
-	
-	@Column
+
 	private Long owner_id;
 	
-	@Column
-	private Date created_at;
+	private Timestamp created_at;
+
+	private Timestamp updated_at;
 	
-	@Column
-	private Date updated_at;
+	
+	
 
 	public Long getId() {
 		return id;
@@ -74,17 +59,13 @@ public class Rental {
 		this.price = price;
 	}
 
-	public String getPicture() {
+	public MultipartFile getPicture() {
 		return picture;
 	}
+
 	public void setPicture(MultipartFile picture) {
-		this.picture = picture.toString();
-	}
-	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	
-	
 
 	public String getDescription() {
 		return description;
@@ -102,21 +83,20 @@ public class Rental {
 		this.owner_id = owner_id;
 	}
 
-	public Date getCreated_at() {
+	public Timestamp getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(Date created_at) {
+	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
 
-	public Date getUpdated_at() {
+	public Timestamp getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(Date updated_at) {
+	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
 	}
-	
-		
+
 }

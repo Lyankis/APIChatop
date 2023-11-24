@@ -1,7 +1,11 @@
 package com.openclassrooms.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.repository.RentalRepository;
 
+import dto.RentalDTO;
 
 @Service
 public class RentalService {
@@ -35,11 +41,45 @@ public class RentalService {
 	public Optional<Rental> findById(Long id) {
 		return rentalRepository.findById(id);
 	}
+	
 	//Création d'une rental
-	public Rental createRental(Rental rental) {
-		rentalRepository.save(rental);
+	public Rental createRental(RentalDTO rental) throws IOException {
+
+		Long time = Date.from(Instant.now()).getTime();
 		
-		return rental;
+		Rental newRental = new Rental();
+		
+		newRental.setName(rental.getName());
+		newRental.setSurface(rental.getSurface());
+		newRental.setPrice(rental.getPrice());
+		
+//		newRental.setPicture(rental.getPicture().getOriginalFilename());
+		
+		String filename = uploadPicture(rental);
+		newRental.setPicture(filename);
+		
+		newRental.setDescription(rental.getDescription());
+		
+		newRental.setOwner_id(rental.getOwner_id());
+		
+		newRental.setCreated_at(new Date(time));
+		newRental.setUpdated_at(new Date(time));
+		
+		return rentalRepository.save(newRental);
+	}
+	
+	public String uploadPicture(RentalDTO rental) throws IOException {
+		
+	    // Récupération de l'image du RentalDTO
+	    MultipartFile imageFile = rental.getPicture();
+
+	    // Génération d'un filename unique 
+	    String filename = String.valueOf(System.currentTimeMillis()) + "_" + imageFile.getOriginalFilename();
+
+	    Path path = Paths.get("src/main/resources/static/images/", filename);
+        Files.write(path, imageFile.getBytes());
+
+	    return "/images/" + filename;
 	}
 	
 	//Update d'une rental
@@ -58,8 +98,8 @@ public class RentalService {
         
         
         
-        updateRental.setCreated_at(new java.sql.Date(time));
-        updateRental.setUpdated_at(new java.sql.Date(time));
+        updateRental.setCreated_at(new Date(time));
+        updateRental.setUpdated_at(new Date(time));
 
 		
 		return rentalRepository.save(rental);
